@@ -25,21 +25,55 @@ async function getWeatherData(url) {
 async function parseJson(weatherData) {
   try {
     const response = await weatherData.json();
+    console.log(response);
     return response;
   } catch (error) {
     console.log(error);
   }
 }
 
-function displayWeather(parsedJson) {
-  console.log("Location: ", parsedJson.address);
-  console.log("Temperature:", parsedJson.days[0].temp);
-  console.log("Min Temperature: ", parsedJson.days[0].tempmin);
-  console.log("Max Temperature:", parsedJson.days[0].tempmax);
+function getProperties(parsedJson) {
+  const address = parsedJson.address;
+  const tempF = parsedJson.days[0].temp;
+  const tempMinF = parsedJson.days[0].tempmin;
+  const tempMaxF = parsedJson.days[0].tempmax;
+
+  const tempC = convertTemp(tempF);
+  const tempMinC = convertTemp(tempMinF);
+  const tempMaxC = convertTemp(tempMaxF);
+  return {
+    address,
+    tempF,
+    tempMinF,
+    tempMaxF,
+    tempC,
+    tempMinC,
+    tempMaxC,
+  };
+}
+
+function displayWeatherF(address, tempF, tempMinF, tempMaxF) {
+  console.log("Location: ", address);
+  console.log("Temperature:", tempF, "f");
+  console.log("Min Temperature: ", tempMinF, "f");
+  console.log("Max Temperature:", tempMaxF, "f");
+}
+function displayWeatherC(address, tempC, tempMinC, tempMaxC) {
+  console.log("Location: ", address);
+  console.log("Temperature:", tempC, "c");
+  console.log("Min Temperature: ", tempMinC, "c");
+  console.log("Max Temperature:", tempMaxC, "c");
 }
 
 async function weatherApp(url) {
   const weatherData = await getWeatherData(url);
   const parsedJson = await parseJson(weatherData);
-  displayWeather(parsedJson);
+  const data = getProperties(parsedJson);
+  displayWeatherF(data.address, data.tempF, data.tempMinF, data.tempMaxF);
+  displayWeatherC(data.address, data.tempC, data.tempMinC, data.tempMaxC);
 }
+
+const convertTemp = (fahrenheit) => {
+  const temp = Math.round((fahrenheit - 32) * (5 / 9)).toFixed(1);
+  return temp;
+};
