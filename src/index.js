@@ -4,6 +4,13 @@ const locationField = document.getElementById("location");
 const tempField = document.getElementById("current");
 const minTempField = document.getElementById("min");
 const maxTempField = document.getElementById("max");
+const toggleBtn = document.getElementById("toggle");
+let toggleF = true;
+
+const convertTemp = (fahrenheit) => {
+  const temp = Math.round((fahrenheit - 32) * (5 / 9));
+  return temp;
+};
 
 form.addEventListener("submit", (event) => {
   const userInput = inputField.value;
@@ -11,6 +18,12 @@ form.addEventListener("submit", (event) => {
   event.preventDefault();
   weatherApp(url);
   inputField.value = "";
+});
+
+toggleBtn.addEventListener("click", () => {
+  toggleF = !toggleF;
+  if (!toggleF) toggleBtn.textContent = "Toggle Fahrenheit";
+  else toggleBtn.textContent = "Toggle Celcius";
 });
 
 async function getWeatherData(url) {
@@ -55,20 +68,6 @@ function getProperties(parsedJson) {
   };
 }
 
-function displayWeatherConsoleF(address, tempF, tempMinF, tempMaxF) {
-  console.log("Location: ", address);
-  console.log("Temperature:", tempF, "f");
-  console.log("Min Temperature: ", tempMinF, "f");
-  console.log("Max Temperature:", tempMaxF, "f");
-}
-
-function displayWeatherConsoleC(address, tempC, tempMinC, tempMaxC) {
-  console.log("Location: ", address);
-  console.log("Temperature:", tempC, "c");
-  console.log("Min Temperature: ", tempMinC, "c");
-  console.log("Max Temperature:", tempMaxC, "c");
-}
-
 function displayWeatherF(address, tempF, tempMinF, tempMaxF) {
   locationField.textContent = `Location: ${address}`;
   tempField.textContent = `Temperature: ${tempF}F`;
@@ -87,10 +86,9 @@ async function weatherApp(url) {
   const weatherData = await getWeatherData(url);
   const parsedJson = await parseJson(weatherData);
   const data = getProperties(parsedJson);
-  displayWeatherF(data.address, data.tempF, data.tempMinF, data.tempMaxF);
+  if (toggleF === true) {
+    displayWeatherF(data.address, data.tempF, data.tempMinF, data.tempMaxF);
+  } else {
+    displayWeatherC(data.address, data.tempC, data.tempMinC, data.tempMaxC);
+  }
 }
-
-const convertTemp = (fahrenheit) => {
-  const temp = Math.round((fahrenheit - 32) * (5 / 9)).toFixed(1);
-  return temp;
-};
