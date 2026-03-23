@@ -1,3 +1,5 @@
+import "./styles.css";
+
 const form = document.querySelector("form");
 const inputField = document.querySelector("input");
 const locationField = document.getElementById("location");

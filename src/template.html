@@ -6,16 +6,22 @@
     <title>Document</title>
   </head>
   <body>
-    <form>
-      <input type="text" required placeholder="Country of city name..." />
-      <button>Submit</button>
-    </form>
-    <button id="toggle">Toggle Celcius</button>
-    <div>
-      <p class="location" id="location"></p>
-      <p class="temperature" id="current"></p>
-      <p class="temperature" id="min"></p>
-      <p class="temperature" id="max"></p>
+    <div id="content">
+      <div id="inner-div">
+        <form id="form">
+          <input type="text" required placeholder="Country of city name..." />
+          <button id="submit">Submit</button>
+        </form>
+        <div id="output">
+          <p class="location" id="location"></p>
+          <p class="temperature" id="current"></p>
+          <p class="temperature" id="min"></p>
+          <p class="temperature" id="max"></p>
+        </div>
+      </div>
+      <div>
+        <button id="toggle">Toggle Celcius</button>
+      </div>
     </div>
   </body>
 </html>
